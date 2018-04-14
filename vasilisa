@@ -33,11 +33,24 @@ then
 			log "removing $size"
 			rm -rf $download_dir/*
 			log "removed"
+
+			trash_dir="/home/$user/.local/share/Trash"
+			if [ -d $trash_dir ]
+			then
+				size=`du -hs $trash_dir 2>/dev/null`
+                        	log "removing $size"
+				rm -rf $trash_dir
+				log "removed"
+			fi
 		fi
 	done
 
 	log "No more users"
 	DISK_USAGE=`df -h | grep -E \/$ | sed "s/  */ /g" | cut -f5 -d' ' | cut -f1 -d'%'`
+
+	log "apt-get clean"
+	apt-get clean
+
 	log "Final disk usage: $DISK_USAGE%"
 
 fi
